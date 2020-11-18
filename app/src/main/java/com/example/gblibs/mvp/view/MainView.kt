@@ -1,5 +1,7 @@
 package com.example.gblibs.mvp.view
 
 interface MainView {
-    fun setButtonText(i: Int, text: String)
+    fun setButton1Text(text: String)
+    fun setButton2Text(text: String)
+    fun setButton3Text(text: String)
 }

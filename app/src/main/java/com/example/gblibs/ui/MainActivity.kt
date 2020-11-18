@@ -16,20 +16,28 @@ class MainActivity : AppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val listener = View.OnClickListener {
-            presenter.counterClick(it.id)
-        }
-
-        btn_counter1.setOnClickListener(listener)
-        btn_counter2.setOnClickListener(listener)
-        btn_counter3.setOnClickListener(listener)
+        btn_counter1.setOnClickListener {presenter.counterClick1()}
+        btn_counter2.setOnClickListener {presenter.counterClick2()}
+        btn_counter3.setOnClickListener {presenter.counterClick3()}
     }
 
-    override fun setButtonText(i: Int, text: String) {
+    private fun setButtonText(i: Int, text: String) {
         when(i){
             0 -> btn_counter1.text = text
             1 -> btn_counter2.text = text
             2 -> btn_counter3.text = text
         }
+    }
+
+    override fun setButton1Text(text: String) {
+        setButtonText(0, text)
+    }
+
+    override fun setButton2Text(text: String) {
+        setButtonText(1, text)
+    }
+
+    override fun setButton3Text(text: String) {
+        setButtonText(2, text)
     }
 }
