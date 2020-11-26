@@ -32,7 +32,7 @@ class UsersPresenter(val router: Router, val usersRepo: GithubUsersRepo) : MvpPr
         loadData()
 
         usersListPresenter.itemClickListener = { view ->
-            router.navigateTo(Screens.UserFormScreen(usersRepo.getUsers()[view.pos]))
+            router.navigateTo(Screens.UserFormScreen(usersListPresenter.users[view.pos]))
         }
     }
 
