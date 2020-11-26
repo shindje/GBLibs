@@ -38,11 +38,11 @@ class UsersPresenter(val router: Router, val usersRepo: GithubUsersRepo, val mai
     }
 
     fun loadData() {
-        usersListPresenter.users.clear()
         usersRepo.getUsers()
             .subscribeOn(Schedulers.computation())
             .observeOn(mainThread)
             .subscribe { users ->
+                usersListPresenter.users.clear()
                 usersListPresenter.users.addAll(users)
                 viewState.updateUsersList()
             }

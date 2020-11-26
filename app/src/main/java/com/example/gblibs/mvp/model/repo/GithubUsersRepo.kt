@@ -15,7 +15,7 @@ class GithubUsersRepo {
         GithubUser("login6")
     )
 
-    fun getUsers(): Single<MutableList<GithubUser>> {
-        return  Observable.fromIterable(repositories).toList()
+    fun getUsers(): Observable<List<GithubUser>> {
+        return  Observable.just(repositories)
     }
 }
