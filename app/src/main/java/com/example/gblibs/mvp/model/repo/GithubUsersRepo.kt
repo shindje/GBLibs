@@ -1,6 +1,8 @@
 package com.example.gblibs.mvp.model.repo
 
 import com.example.gblibs.mvp.model.entity.GithubUser
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 class GithubUsersRepo {
 
@@ -13,7 +15,7 @@ class GithubUsersRepo {
         GithubUser("login6")
     )
 
-    fun getUsers(): List<GithubUser> {
-        return repositories
+    fun getUsers(): Single<MutableList<GithubUser>> {
+        return  Observable.fromIterable(repositories).toList()
     }
 }

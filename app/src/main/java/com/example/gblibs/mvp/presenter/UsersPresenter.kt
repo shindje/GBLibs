@@ -5,10 +5,12 @@ import com.example.gblibs.mvp.model.repo.GithubUsersRepo
 import com.example.gblibs.mvp.presenter.list.IUsersListPresenter
 import com.example.gblibs.mvp.view.UsersView
 import com.example.gblibs.mvp.view.list.UserItemView
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
-class UsersPresenter(val router: Router, val usersRepo: GithubUsersRepo) : MvpPresenter<UsersView>() {
+class UsersPresenter(val router: Router, val usersRepo: GithubUsersRepo, val mainThread: Scheduler) : MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUsersListPresenter {
         override var itemClickListener: ((UserItemView) -> Unit)? = null
@@ -36,10 +38,14 @@ class UsersPresenter(val router: Router, val usersRepo: GithubUsersRepo) : MvpPr
     }
 
     fun loadData() {
-        val users = usersRepo.getUsers()
         usersListPresenter.users.clear()
-        usersListPresenter.users.addAll(users)
-        viewState.updateUsersList()
+        usersRepo.getUsers()
+            .subscribeOn(Schedulers.computation())
+            .observeOn(mainThread)
+            .subscribe { users ->
+                usersListPresenter.users.addAll(users)
+                viewState.updateUsersList()
+            }
     }
 
     fun backClick(): Boolean {
