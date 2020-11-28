@@ -5,6 +5,7 @@ import com.example.gblibs.mvp.model.repo.GithubUsersRepo
 import com.example.gblibs.mvp.presenter.list.IUsersListPresenter
 import com.example.gblibs.mvp.view.UsersView
 import com.example.gblibs.mvp.view.list.UserItemView
+import com.example.gblibs.navigation.Screens
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
@@ -31,7 +32,7 @@ class UsersPresenter(val router: Router, val usersRepo: GithubUsersRepo) : MvpPr
         loadData()
 
         usersListPresenter.itemClickListener = { view ->
-            //router.navigateTo(<экран пользователя>)
+            router.navigateTo(Screens.UserFormScreen(usersListPresenter.users[view.pos]))
         }
     }
 
