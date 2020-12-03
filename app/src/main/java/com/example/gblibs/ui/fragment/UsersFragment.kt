@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gblibs.R
-import com.example.gblibs.mvp.model.repo.GithubUsersRepo
+import com.example.gblibs.mvp.model.api.ApiHolder
+import com.example.gblibs.mvp.model.repo.RetrofitGithubUsersRepo
 import com.example.gblibs.mvp.presenter.UsersPresenter
 import com.example.gblibs.mvp.view.UsersView
 import com.example.gblibs.ui.App
 import com.example.gblibs.ui.BackButtonListener
 import com.example.gblibs.ui.adapter.UsersRvAdapter
+import com.example.gblibs.ui.image.GlideImageLoader
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_users.*
 import moxy.MvpAppCompatFragment
@@ -24,11 +26,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     val presenter by moxyPresenter {
-        UsersPresenter(App.instance.router, GithubUsersRepo(), AndroidSchedulers.mainThread())
+        UsersPresenter(App.instance.router, RetrofitGithubUsersRepo(ApiHolder.api), AndroidSchedulers.mainThread())
     }
 
     val adapter by lazy {
-        UsersRvAdapter(presenter.usersListPresenter)
+        UsersRvAdapter(presenter.usersListPresenter, GlideImageLoader())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
