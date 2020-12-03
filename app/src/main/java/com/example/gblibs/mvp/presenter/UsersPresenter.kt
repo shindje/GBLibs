@@ -1,7 +1,7 @@
 package com.example.gblibs.mvp.presenter
 
 import com.example.gblibs.mvp.model.entity.GithubUser
-import com.example.gblibs.mvp.model.repo.GithubUsersRepo
+import com.example.gblibs.mvp.model.repo.RetrofitGithubUsersRepo
 import com.example.gblibs.mvp.presenter.list.IUsersListPresenter
 import com.example.gblibs.mvp.view.UsersView
 import com.example.gblibs.mvp.view.list.UserItemView
@@ -11,7 +11,7 @@ import com.example.gblibs.navigation.Screens
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
-class UsersPresenter(val router: Router, val usersRepo: GithubUsersRepo, val mainThread: Scheduler) : MvpPresenter<UsersView>() {
+class UsersPresenter(val router: Router, val usersRepoRetrofit: RetrofitGithubUsersRepo, val mainThread: Scheduler) : MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUsersListPresenter {
         override var itemClickListener: ((UserItemView) -> Unit)? = null
@@ -21,6 +21,7 @@ class UsersPresenter(val router: Router, val usersRepo: GithubUsersRepo, val mai
         override fun bindView(view: UserItemView) {
             val user = users[view.pos]
             view.setLogin(user.login)
+            user.avatarUrl?.let { view.loadImage(it) }
         }
 
         override fun getCount() = users.size
@@ -39,14 +40,15 @@ class UsersPresenter(val router: Router, val usersRepo: GithubUsersRepo, val mai
     }
 
     fun loadData() {
-        usersRepo.getUsers()
-            .subscribeOn(Schedulers.computation())
+        usersRepoRetrofit.getUsers()
             .observeOn(mainThread)
-            .subscribe { users ->
+            .subscribe({ repos ->
                 usersListPresenter.users.clear()
-                usersListPresenter.users.addAll(users)
+                usersListPresenter.users.addAll(repos)
                 viewState.updateUsersList()
-            }
+            }, {
+                println("Error: ${it.message}")
+            })
     }
 
     fun backClick(): Boolean {
