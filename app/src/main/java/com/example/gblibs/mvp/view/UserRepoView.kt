@@ -4,8 +4,6 @@ import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEndSingle
 
 @AddToEndSingle
-interface UserFormView: MvpView {
+interface UserRepoView: MvpView {
     fun init()
-    fun updateUserLogin(login: String?)
-    fun updateUserReposList()
 }
