@@ -13,11 +13,7 @@ import kotlinx.android.synthetic.main.item_repo.*
 class UserReposRvAdapter(val presenter: IUserReposListPresenter) : RecyclerView.Adapter<UserReposRvAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_repo, parent, false)).apply {
-            containerView.setOnClickListener {
-                presenter.itemClickListener?.invoke(this)
-            }
-        }
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_repo, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.pos = position

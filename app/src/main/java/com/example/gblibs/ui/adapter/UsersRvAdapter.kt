@@ -16,11 +16,7 @@ import kotlinx.android.synthetic.main.item_user.view.*
 class UsersRvAdapter(val presenter: IUsersListPresenter, val imageLoader: IImageLoader<ImageView>) : RecyclerView.Adapter<UsersRvAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)).apply {
-            containerView.setOnClickListener {
-                presenter.itemClickListener?.invoke(this)
-            }
-        }
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.pos = position
