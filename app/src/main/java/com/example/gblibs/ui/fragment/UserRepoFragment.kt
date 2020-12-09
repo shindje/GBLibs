@@ -33,7 +33,7 @@ class UserRepoFragment: MvpAppCompatFragment(), UserRepoView, BackButtonListener
 
     override fun init() {
         tv_repo_name.setText(presenter.repo?.name)
-        tv_forks.setText(presenter.repo?.forks)
+        tv_forks.setText(presenter.repo?.forksCount)
     }
 
     override fun backPressed() = presenter.backClick()
