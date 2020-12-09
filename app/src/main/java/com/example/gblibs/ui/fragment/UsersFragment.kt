@@ -1,6 +1,5 @@
 package com.example.gblibs.ui.fragment
 
-import android.app.usage.NetworkStats
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gblibs.R
 import com.example.gblibs.mvp.model.api.ApiHolder
+import com.example.gblibs.mvp.model.cache.RoomUsersCache
 import com.example.gblibs.mvp.model.entity.room.db.Database
 import com.example.gblibs.mvp.model.repo.RetrofitGithubUsersRepo
 import com.example.gblibs.mvp.presenter.UsersPresenter
@@ -29,7 +29,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     val presenter by moxyPresenter {
-        UsersPresenter(App.instance.router, RetrofitGithubUsersRepo(ApiHolder.api, AndroidNetworkStatus(requireContext()), Database.getInstance()), AndroidSchedulers.mainThread())
+        UsersPresenter(App.instance.router, RetrofitGithubUsersRepo(ApiHolder.api, AndroidNetworkStatus(requireContext()), RoomUsersCache(Database.getInstance())), AndroidSchedulers.mainThread())
     }
 
     val adapter by lazy {

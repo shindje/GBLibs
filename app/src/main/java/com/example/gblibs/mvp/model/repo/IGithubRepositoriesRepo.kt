@@ -4,6 +4,6 @@ import com.example.gblibs.mvp.model.entity.GithubRepository
 import com.example.gblibs.mvp.model.entity.GithubUser
 import io.reactivex.rxjava3.core.Single
 
-interface IGithubUsersRepo {
-    fun getUsers(): Single<List<GithubUser>>
+interface IGithubRepositoriesRepo {
+    fun getUserRepos(user: GithubUser): Single<List<GithubRepository>>
 }

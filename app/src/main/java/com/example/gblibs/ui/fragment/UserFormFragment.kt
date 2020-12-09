@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gblibs.R
 import com.example.gblibs.mvp.model.api.ApiHolder
+import com.example.gblibs.mvp.model.cache.RoomRepositoriesCache
 import com.example.gblibs.mvp.model.entity.GithubUser
 import com.example.gblibs.mvp.model.entity.room.db.Database
-import com.example.gblibs.mvp.model.repo.RetrofitGithubUsersRepo
+import com.example.gblibs.mvp.model.repo.RetrofitGithubRepositoriesRepo
 import com.example.gblibs.mvp.presenter.UserFormPresenter
 import com.example.gblibs.mvp.view.UserFormView
 import com.example.gblibs.ui.App
@@ -33,7 +34,7 @@ class UserFormFragment: MvpAppCompatFragment(), UserFormView, BackButtonListener
     val presenter by moxyPresenter {
         val user: GithubUser = arguments?.getParcelable<GithubUser>("user") as GithubUser
         UserFormPresenter(App.instance.router,
-            RetrofitGithubUsersRepo(ApiHolder.api, AndroidNetworkStatus(requireContext()), Database.getInstance()),
+            RetrofitGithubRepositoriesRepo(ApiHolder.api, AndroidNetworkStatus(requireContext()), RoomRepositoriesCache(Database.getInstance())),
             AndroidSchedulers.mainThread(),
             user)
     }
