@@ -2,7 +2,7 @@ package com.example.gblibs.mvp.presenter
 
 import com.example.gblibs.mvp.model.entity.GithubRepository
 import com.example.gblibs.mvp.model.entity.GithubUser
-import com.example.gblibs.mvp.model.repo.RetrofitGithubUsersRepo
+import com.example.gblibs.mvp.model.repo.RetrofitGithubRepositoriesRepo
 import com.example.gblibs.mvp.presenter.list.IUserReposListPresenter
 import com.example.gblibs.mvp.view.UserFormView
 import com.example.gblibs.mvp.view.list.UserRepoItemView
@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
-class UserFormPresenter(val router: Router, val usersRepoRetrofit: RetrofitGithubUsersRepo, val mainThread: Scheduler, val user: GithubUser) : MvpPresenter<UserFormView>() {
+class UserFormPresenter(val router: Router, val repositoriesRepoRetrofit: RetrofitGithubRepositoriesRepo, val mainThread: Scheduler, val user: GithubUser) : MvpPresenter<UserFormView>() {
     class UserReposListPresenter : IUserReposListPresenter {
         override var itemClickListener: ((UserRepoItemView) -> Unit)? = null
 
@@ -39,7 +39,7 @@ class UserFormPresenter(val router: Router, val usersRepoRetrofit: RetrofitGithu
     }
 
     fun loadData() {
-        usersRepoRetrofit.getUserRepos(user)
+        repositoriesRepoRetrofit.getUserRepos(user)
             .observeOn(mainThread)
             .subscribe({ repos ->
                 userReposListPresenter.userRepos.clear()
