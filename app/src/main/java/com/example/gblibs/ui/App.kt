@@ -1,9 +1,9 @@
 package com.example.gblibs.ui
 
 import android.app.Application
-import com.example.gblibs.mvp.model.entity.room.db.Database
-import ru.terrakok.cicerone.Cicerone
-import ru.terrakok.cicerone.Router
+import com.example.gblibs.di.AppComponent
+import com.example.gblibs.di.DaggerAppComponent
+import com.example.gblibs.di.modules.AppModule
 
 class App : Application() {
 
@@ -11,19 +11,14 @@ class App : Application() {
         lateinit var instance: App
     }
 
-    private val cicerone: Cicerone<Router> by lazy {
-        Cicerone.create()
-    }
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        Database.create(this)
+
+        appComponent = DaggerAppComponent.builder()
+            .appModule(AppModule(this))
+            .build()
     }
-
-    val navigatorHolder
-        get() = cicerone.navigatorHolder
-
-    val router
-        get() = cicerone.router
 }

@@ -5,14 +5,16 @@ import com.example.gblibs.navigation.Screens
 import com.example.gblibs.rxlearn.Operators
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class MainPresenter(val router: Router): MvpPresenter<MainView>() {
+class MainPresenter(): MvpPresenter<MainView>() {
+
+    @Inject
+    lateinit var router: Router
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         router.replaceScreen(Screens.UsersScreen())
-
-        Operators().exec()
     }
 
     fun backClick() {
