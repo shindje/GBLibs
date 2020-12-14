@@ -8,20 +8,26 @@ import com.example.gblibs.ui.App
 import com.example.gblibs.ui.BackButtonListener
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import javax.inject.Inject
 
 class MainActivity : MvpAppCompatActivity(), MainView {
 
-    val navigatorHolder = App.instance.navigatorHolder
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
     val navigator = SupportAppNavigator(this, supportFragmentManager, R.id.container)
 
-    val presenter by moxyPresenter {
-        MainPresenter(App.instance.router)
+    val presenter: MainPresenter by moxyPresenter {
+        MainPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        App.instance.appComponent.inject(this)
     }
 
     override fun onResumeFragments() {

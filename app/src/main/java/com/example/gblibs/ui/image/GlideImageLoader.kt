@@ -10,13 +10,13 @@ import com.bumptech.glide.request.target.Target
 import com.example.gblibs.mvp.model.cache.IImageCache
 import com.example.gblibs.mvp.model.image.IImageLoader
 import com.example.gblibs.mvp.model.network.INetworkStatus
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import java.io.ByteArrayOutputStream
 
 class GlideImageLoader(
     val networkStatus: INetworkStatus,
-    val imageCache: IImageCache,
-    val mainThread: Scheduler
+    val imageCache: IImageCache
 ): IImageLoader<ImageView> {
 
     override fun loadInto(url: String, container: ImageView) {
@@ -47,7 +47,7 @@ class GlideImageLoader(
                             resource?.apply {
                                 val out = ByteArrayOutputStream();
                                 this.compress(Bitmap.CompressFormat.PNG, 100, out)
-                                imageCache.put(url, out.toByteArray()).observeOn(mainThread).subscribe()
+                                imageCache.put(url, out.toByteArray()).observeOn(AndroidSchedulers.mainThread()).subscribe()
                                 out.close()
                             }
 
@@ -56,7 +56,7 @@ class GlideImageLoader(
                     })
                     .into(container)
             } else {
-                imageCache.get(url).observeOn(mainThread).subscribe({ byteArray ->
+                imageCache.get(url).observeOn(AndroidSchedulers.mainThread()).subscribe({ byteArray ->
                     byteArray?.apply {
                         Glide.with(container.context)
                             .asBitmap()

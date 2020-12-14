@@ -22,31 +22,38 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_users.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+    //При выполнении практического задания это должно отсюда уйти
+    @Inject
+    lateinit var database: Database
 
     companion object {
-        fun newInstance() = UsersFragment()
+        fun newInstance() = UsersFragment().apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     val presenter by moxyPresenter {
-        UsersPresenter(App.instance.router, RetrofitGithubUsersRepo(ApiHolder.api, AndroidNetworkStatus(requireContext()), RoomUsersCache(Database.getInstance())), AndroidSchedulers.mainThread())
+        UsersPresenter(AndroidSchedulers.mainThread()).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
-    val adapter by lazy {
-        UsersRvAdapter(presenter.usersListPresenter, GlideImageLoader(AndroidNetworkStatus(requireContext()), RoomImageCache(Database.getInstance(), requireContext()), AndroidSchedulers.mainThread() ))
-    }
+    var adapter: UsersRvAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         View.inflate(context, R.layout.fragment_users, null)
 
     override fun init() {
         rv_users.layoutManager = LinearLayoutManager(requireContext())
+        adapter = UsersRvAdapter(presenter.usersListPresenter, GlideImageLoader(AndroidNetworkStatus(context!!), RoomImageCache(database, context!!)))
         rv_users.adapter = adapter
     }
 
     override fun updateUsersList() {
-        adapter.notifyDataSetChanged()
+        adapter?.notifyDataSetChanged()
     }
 
     override fun backPressed() = presenter.backClick()
