@@ -2,7 +2,7 @@ package com.example.gblibs.mvp.presenter
 
 import com.example.gblibs.mvp.model.entity.GithubRepository
 import com.example.gblibs.mvp.model.entity.GithubUser
-import com.example.gblibs.mvp.model.repo.RetrofitGithubRepositoriesRepo
+import com.example.gblibs.mvp.model.repo.IGithubRepositoriesRepo
 import com.example.gblibs.mvp.presenter.list.IUserReposListPresenter
 import com.example.gblibs.mvp.view.UserFormView
 import com.example.gblibs.mvp.view.list.UserRepoItemView
@@ -10,8 +10,16 @@ import com.example.gblibs.navigation.Screens
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class UserFormPresenter(val router: Router, val repositoriesRepoRetrofit: RetrofitGithubRepositoriesRepo, val mainThread: Scheduler, val user: GithubUser) : MvpPresenter<UserFormView>() {
+class UserFormPresenter(val user: GithubUser) : MvpPresenter<UserFormView>() {
+    @Inject
+    lateinit var mainThread: Scheduler
+    @Inject
+    lateinit var repositoriesRepoRetrofit: IGithubRepositoriesRepo
+    @Inject
+    lateinit var router: Router
+
     class UserReposListPresenter : IUserReposListPresenter {
         override var itemClickListener: ((UserRepoItemView) -> Unit)? = null
 
@@ -49,7 +57,7 @@ class UserFormPresenter(val router: Router, val repositoriesRepoRetrofit: Retrof
                 println("Error: ${it.message}")
             })
 
-        viewState.updateUserLogin(user?.login)
+        viewState.updateUserLogin(user.login)
     }
 
     fun backClick(): Boolean {

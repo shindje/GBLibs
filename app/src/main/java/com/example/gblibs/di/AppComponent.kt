@@ -2,11 +2,11 @@ package com.example.gblibs.di
 
 import com.example.gblibs.di.modules.*
 import com.example.gblibs.mvp.presenter.MainPresenter
+import com.example.gblibs.mvp.presenter.UserFormPresenter
+import com.example.gblibs.mvp.presenter.UserRepoPresenter
 import com.example.gblibs.mvp.presenter.UsersPresenter
 import com.example.gblibs.ui.activity.MainActivity
-import com.example.gblibs.ui.fragment.UserFormFragment
-import com.example.gblibs.ui.fragment.UserRepoFragment
-import com.example.gblibs.ui.fragment.UsersFragment
+import com.example.gblibs.ui.adapter.UsersRvAdapter
 import dagger.Component
 import javax.inject.Singleton
 
@@ -17,7 +17,8 @@ import javax.inject.Singleton
         CiceroneModule::class,
         CacheModule::class,
         ApiModule::class,
-        RepoModule::class
+        RepoModule::class,
+        ImageLoaderModule::class
     ]
 )
 
@@ -26,9 +27,7 @@ interface AppComponent {
     fun inject(mainPresenter: MainPresenter)
 
     fun inject(usersPresenter: UsersPresenter)
-
-    //При выполнении практического задания это должно отсюда уйти
-    fun inject(userFormFragment: UserFormFragment)
-    fun inject(repositoryFragment: UserRepoFragment)
-    fun inject(usersFragment: UsersFragment)
+    fun inject(userFormPresenter: UserFormPresenter)
+    fun inject(usersRepoPresenter: UserRepoPresenter)
+    fun inject(usersRvAdapter: UsersRvAdapter)
 }
