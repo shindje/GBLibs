@@ -11,7 +11,6 @@ import com.example.gblibs.mvp.model.cache.IImageCache
 import com.example.gblibs.mvp.model.image.IImageLoader
 import com.example.gblibs.mvp.model.network.INetworkStatus
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Scheduler
 import java.io.ByteArrayOutputStream
 
 class GlideImageLoader(

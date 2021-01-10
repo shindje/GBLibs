@@ -13,7 +13,9 @@ import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class UsersPresenter(val mainThread: Scheduler) : MvpPresenter<UsersView>() {
+class UsersPresenter() : MvpPresenter<UsersView>() {
+    @Inject
+    lateinit var mainThread: Scheduler
     @Inject
     lateinit var usersRepo: IGithubUsersRepo
     @Inject

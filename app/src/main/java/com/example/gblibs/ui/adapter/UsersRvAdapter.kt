@@ -9,11 +9,18 @@ import com.example.gblibs.R
 import com.example.gblibs.mvp.model.image.IImageLoader
 import com.example.gblibs.mvp.presenter.list.IUsersListPresenter
 import com.example.gblibs.mvp.view.list.UserItemView
+import com.example.gblibs.ui.App
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_user.*
-import kotlinx.android.synthetic.main.item_user.view.*
+import javax.inject.Inject
 
-class UsersRvAdapter(val presenter: IUsersListPresenter, val imageLoader: IImageLoader<ImageView>) : RecyclerView.Adapter<UsersRvAdapter.ViewHolder>() {
+class UsersRvAdapter(val presenter: IUsersListPresenter) : RecyclerView.Adapter<UsersRvAdapter.ViewHolder>() {
+    @Inject
+    lateinit var imageLoader: IImageLoader<ImageView>
+
+    init {
+        App.instance.appComponent.inject(this)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false))
